@@ -2,16 +2,60 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>My Portfolio</title>
+    <title>Alex's portfolio</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
   <body>
+      
+    <div id="header">
+        <h1>Alex Rodríguez</h1>
+    </div>
     <div id="content">
-      <h1>My Portfolio</h1>
-      <p>This is my portfolio.</p>
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">Hello</button>
+        <p>Hi! My name is Alex and I'm from Guaynabo, Puerto Rico. 
+            I'm a rising senior at Brown University concentrating in Computer Science. 
+            I've taken courses in Machine Learning and Operating Systems. Outside of CS, 
+            I've explored in Economics, Anthropology and more. I'm a fan of warm weather,
+            ramen and running. In my free time I like to read and hang with friends.
+            I'm also a big appreciator of fashion, photography and music. Finally, I 
+            speak both Spanish and English. You can find me on 
+            <a href="https://www.linkedin.com/in/alexandra-rodriguez-evans/">LinkedIn</a> 
+            and <a href="https://github.com/alexrodriguez0">GitHub</a>. </p>   
+        <img src="/images/cit.jpeg" alt="Picture of me" width="200" height="210">
+        <h2>Pojects I've worked on:</h2>   
+        <p>Most of the projects I've worked on recently are low-level and in C or 
+        implemenations of ML models in Python. Some of these are:</p>
+        <ul>
+            <li>Implementation of a file system called S5FS -- 
+                open, close, mkdir, and other such functions</li>
+            <li>Implementation of a user threads package</li>
+            <li>Implementation of a logistic regression model</li>
+        </ul>
+        <h2>Some of the things I like are:</h2>     
+        <ul>
+            <li>Reading</li>
+            <li>Meditating</li>
+            <li>Drinking coffee</li>
+            <li>Learning something new about anything at all</li>
+            <li>Listening to music</li>
+            <li>Hanging out with friends</li>
+            <li>Photography</li>
+        </ul> 
+      <h2>These are some of the pictures I've taken on my film camera:</h2>
+      <img src="/images/santurce.jpg" alt="Picture in Santurce, PR" width="300" height="200">
+      <img src="/images/primos.png" alt="Picture in Culebra, PR" width="300" height="200">
+      <img src="/images/nyc.jpg" alt="Picture in NYC" width="300" height="200">
+      <p>The first picture is from a photoshoot I did with a friend in Santurce (an area in San Juan, PR). The second
+          picture is from a family trip to Culebra, PR and the third is a picture I took from a taxi in NYC. I like
+          to both coordinate shots I imagine in my head and capture things I see while I'm out and about. </p>
+      <h2>These are some pictures I've taken on my phone:</h2>
+      <img src="/images/cat.jpeg" alt="Picture of my cat" width="200" height="200">
+      <img src="/images/tree.jpeg" alt="Picture of tree" width="200" height="200">
+      <img src="/images/ramen.jpeg" alt="Picture of ramen" width="200" height="200">
+      <p>The pictures (left to right) include my cat and other memories from last summer.
+      </p>
+      <h2>Click the button for things I like to do during quarantine:</h2>
+      <button onclick="addRandomGreeting()">Quarantine things!</button>
       <div id="greeting-container"></div>
     </div>
   </body>
