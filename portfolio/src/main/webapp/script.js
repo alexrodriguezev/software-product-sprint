@@ -51,11 +51,11 @@ function handleResponse(response) {
   // content and not a simple variable.
 
     // Convert to json
-    const jsonPromise = response.json()
+    const textPromise = response.text()
 
     // When the response is converted to json, pass the result into the
     // addQuoteToDom() function.
-    jsonPromise.then(addToDom)
+    textPromise.then(addToDom)
 }
 
 /** Adds a comment to the DOM. */
@@ -63,5 +63,5 @@ function addToDom(text) {
   console.log('Adding comment to dom: ' + text);
 
   const commentContainer = document.getElementById('comment-container');
-  commentContainer.innerText = comment;
+  commentContainer.innerText = text;
 }

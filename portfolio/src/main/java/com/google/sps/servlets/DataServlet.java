@@ -22,6 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import com.google.gson.Gson;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
@@ -48,16 +51,41 @@ public class DataServlet extends HttpServlet {
       Arrays.sort(words);
     }
 
+    Entity taskEntity = new Entity("Task");
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(taskEntity);
+
     // Respond with the result.
     response.setContentType("text/html;");
-    // response.sendRedirect("https://8080-dot-12573813-dot-devshell.appspot.com/");
     response.getWriter().println(Arrays.toString(words));
+    // response.sendRedirect("https://8080-dot-12573813-dot-devshell.appspot.com/index.html");
   }
   
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // response.setContentType("application/json;");
-    // response.getWriter().println("\nThings turn out best for the people who make the best out of how things turn out.");
+ // Get the input from the form.
+    // String text = getParameter(request, "text-input", "");
+    // boolean upperCase = Boolean.parseBoolean(getParameter(request, "upper-case", "false"));
+    // boolean sort = Boolean.parseBoolean(getParameter(request, "sort", "false"));
+
+    // // Convert the text to upper case.
+    // if (upperCase) {
+    //   text = text.toUpperCase();
+    // }
+
+    // // Break the text into individual words.
+    // String[] words = text.split("\\s*,\\s*");
+
+    // // Sort the words.
+    // if (sort) {
+    //   Arrays.sort(words);
+    // }    
+   
+    // // Respond with the result
+    response.setContentType("text/html;");
+    // response.getWriter().println(Arrays.toString(words));
+    response.getWriter().println("Test");
 
     // ArrayList<String> fruitList = new ArrayList<String>();
     // fruitList.add("mango");
@@ -66,10 +94,10 @@ public class DataServlet extends HttpServlet {
     // String json = convertToJsonUsingGson(fruitList);
     // // response.setContentType("application/json;");
     // response.getWriter().println(json);
-    // Print out response to page
-    response.setContentType("application/json");
-    String json = convertToJsonUsingGson(response);
-    response.getWriter().println(json);
+    // // Print out response to page
+    // response.setContentType("application/json");
+    // String json = convertToJsonUsingGson(response);
+    // response.getWriter().println(json);
   }
 
   /**
