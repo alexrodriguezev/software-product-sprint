@@ -57,9 +57,27 @@
       <h2>Click the button for things I like to do during quarantine:</h2>
       <button onclick="addRandomGreeting()">Quarantine things!</button>
       <div id="greeting-container"></div>
-      <h2>Click the button for a cool message:</h2>
-      <button onclick="addMessage()">Get a cool message!</button>
-      <div id="message-container"></div>
-    </div>
+      <!-- <h2>Click the button for a cool message:</h2> -->
+      <!-- <button onclick="addMessage()">Get a cool message!</button> -->
+      <!-- <div id="message-container"></div> -->
+     <h2>Submit a comment here:</h2>
+      <form action="/data" method="POST">
+
+        <p>Enter a comma-separated list of words:</p>
+        <textarea name="text-input">one, two, three</textarea>
+        <br/><br/>
+
+        <p>Choose some options:</p>
+        <input type="checkbox" name="upper-case" value="true"> Upper-case
+        <br/>
+        <input type="checkbox" name="sort" value="true"> Alphabetize
+        <br/><br/>
+        <input type="submit" />
+        <!-- Old code: <input type="submit" onclick="addComment()"/> -->
+        <!-- <p>Comments section:</p>
+        <div id="comment-container"></div>
+        </div> -->
+    </form>
+    
   </body>
 </html>

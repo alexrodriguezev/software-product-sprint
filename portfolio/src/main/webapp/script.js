@@ -13,13 +13,13 @@
 // limitations under the License.
 
 /**
- * Adds a random greeting to the page.
+ * Adds a random activity to the page.
  */
 function addRandomGreeting() {
   const greetings =
       ['Go for walks', 'Watch TV with my family', 'Pet my pets', 'Go on drives'];
 
-  // Pick a random greeting.
+  // Pick a random activity.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 
   // Add it to the page.
@@ -30,8 +30,8 @@ function addRandomGreeting() {
 /**
  * Fetches a message from the server and adds it to the DOM.
  */
-function addMessage() {
-  console.log('Fetching a random quote.');
+function addComment() {
+  console.log('Fetching a comment.');
 
   // The fetch() function returns a Promise because the request is asynchronous.
   const responsePromise = fetch('/data');
@@ -47,19 +47,21 @@ function addMessage() {
 function handleResponse(response) {
   console.log('Handling the response.');
 
-  // response.text() returns a Promise, because the response is a stream of
+  // Old comment: response.text() returns a Promise, because the response is a stream of
   // content and not a simple variable.
-  const textPromise = response.text();
 
-  // When the response is converted to text, pass the result into the
-  // addQuoteToDom() function.
-  textPromise.then(addMessageToDom);
+    // Convert to json
+    const jsonPromise = response.json()
+
+    // When the response is converted to json, pass the result into the
+    // addQuoteToDom() function.
+    jsonPromise.then(addToDom)
 }
 
-/** Adds a random quote to the DOM. */
-function addMessageToDom(message) {
-  console.log('Adding quote to dom: ' + message);
+/** Adds a comment to the DOM. */
+function addToDom(text) {
+  console.log('Adding comment to dom: ' + text);
 
-  const messageContainer = document.getElementById('message-container');
-  messageContainer.innerText = message;
+  const commentContainer = document.getElementById('comment-container');
+  commentContainer.innerText = comment;
 }
