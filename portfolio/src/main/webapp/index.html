@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload="addComment()">
       
     <div id="header">
         <h1>Alex Rodríguez</h1>
@@ -73,10 +73,9 @@
         <input type="checkbox" name="sort" value="true"> Alphabetize
         <br/><br/>
         <input type="submit"/> 
-        <!-- <input type="submit" onclick="addComment()"/> -->
     </form>
-    <!-- <p>Comments section:</p>
-    <div id="comment-container"></div> -->
+    <p>Comments section:</p>
+        <div id="comment-container"></div>
     </div>
   </body>
 </html>

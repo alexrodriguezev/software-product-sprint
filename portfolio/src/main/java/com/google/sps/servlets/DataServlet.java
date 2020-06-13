@@ -25,11 +25,13 @@ import com.google.gson.Gson;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-
+import com.google.sps.data.Comment;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+
+  Comment comment = new Comment();
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -51,53 +53,23 @@ public class DataServlet extends HttpServlet {
       Arrays.sort(words);
     }
 
-    Entity taskEntity = new Entity("Task");
+    // Set the Comment object
+    comment.setComment(words);
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(taskEntity);
-
-    // Respond with the result.
+    // Redirect to /index.html 
     response.setContentType("text/html;");
-    response.getWriter().println(Arrays.toString(words));
-    // response.sendRedirect("https://8080-dot-12573813-dot-devshell.appspot.com/index.html");
+    response.sendRedirect("https://8080-dot-12573813-dot-devshell.appspot.com/index.html");
   }
   
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
- // Get the input from the form.
-    // String text = getParameter(request, "text-input", "");
-    // boolean upperCase = Boolean.parseBoolean(getParameter(request, "upper-case", "false"));
-    // boolean sort = Boolean.parseBoolean(getParameter(request, "sort", "false"));
-
-    // // Convert the text to upper case.
-    // if (upperCase) {
-    //   text = text.toUpperCase();
-    // }
-
-    // // Break the text into individual words.
-    // String[] words = text.split("\\s*,\\s*");
-
-    // // Sort the words.
-    // if (sort) {
-    //   Arrays.sort(words);
-    // }    
-   
-    // // Respond with the result
+    // Respond with comment
     response.setContentType("text/html;");
-    // response.getWriter().println(Arrays.toString(words));
-    response.getWriter().println("Test");
-
-    // ArrayList<String> fruitList = new ArrayList<String>();
-    // fruitList.add("mango");
-    // fruitList.add("strawberries");
-    // fruitList.add("papaya");
-    // String json = convertToJsonUsingGson(fruitList);
-    // // response.setContentType("application/json;");
-    // response.getWriter().println(json);
-    // // Print out response to page
-    // response.setContentType("application/json");
-    // String json = convertToJsonUsingGson(response);
-    // response.getWriter().println(json);
+    String[] output = comment.getComment();
+    if (output != null) {
+        // if a comment was inputted in the form, print it
+        response.getWriter().println(Arrays.toString(output));
+    }
   }
 
   /**
