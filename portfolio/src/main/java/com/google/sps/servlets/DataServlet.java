@@ -57,20 +57,20 @@ public class DataServlet extends HttpServlet {
     // Set the Comment object
     comment.setComment(text);
 
-    // Make datastore and entity if comment is not null
+    // Make datastore and entity 
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Entity inputEntity = new Entity("Input");
+    inputEntity.setProperty("timestamp", timestamp);
     if (comment.getComment() != null) {
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Entity inputEntity = new Entity("Input");
-        inputEntity.setProperty("timestamp", timestamp);
+        // if comment is not null
         inputEntity.setProperty("text", comment.getComment());
-
-        // Store the entity
-        datastore.put(inputEntity);
-
-        // Redirect to /index.html 
-        response.setContentType("text/html;");
-        response.sendRedirect("/index.html");
     }
+     // Store the entity
+    datastore.put(inputEntity);
+
+    // Redirect to /index.html 
+    response.setContentType("text/html;");
+    response.sendRedirect("/index.html");
    
   }
   
