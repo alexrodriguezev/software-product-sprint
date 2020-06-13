@@ -69,7 +69,7 @@ public class DataServlet extends HttpServlet {
 
         // Redirect to /index.html 
         response.setContentType("text/html;");
-        response.sendRedirect("https://8080-dot-12573813-dot-devshell.appspot.com/index.html");
+        response.sendRedirect("/index.html");
     }
    
   }
