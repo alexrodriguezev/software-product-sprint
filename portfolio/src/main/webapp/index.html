@@ -63,18 +63,15 @@
      <h2>Submit a comment here:</h2>
       <form action="/data" method="POST">
 
-        <p>Enter a comma-separated list of words:</p>
-        <textarea name="text-input">one, two, three</textarea>
-        <br/><br/>
-
-        <p>Choose some options:</p>
-        <input type="checkbox" name="upper-case" value="true"> Upper-case
+        <!-- <p>Enter a comma-separated list of words:</p> -->
+        <textarea name="text-input">example comment</textarea>
         <br/>
-        <input type="checkbox" name="sort" value="true"> Alphabetize
-        <br/><br/>
+        <p>Spice it up:</p>
+        <input type="checkbox" name="upper-case" value="true"> Upper-case
+        <br/> <br/>
         <input type="submit"/> 
     </form>
-    <p>Comments section:</p>
+    <h2>Checkout all comments:</h2>
         <div id="comment-container"></div>
     </div>
   </body>

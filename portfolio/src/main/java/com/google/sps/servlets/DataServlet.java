@@ -54,23 +54,15 @@ public class DataServlet extends HttpServlet {
       text = text.toUpperCase();
     }
 
-    // Break the text into individual words.
-    String[] words = text.split("\\s*,\\s*");
-
-    // Sort the words.
-    if (sort) {
-      Arrays.sort(words);
-    }
-
     // Set the Comment object
-    comment.setComment(words);
+    comment.setComment(text);
 
     // Make datastore and entity if comment is not null
     if (comment.getComment() != null) {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         Entity inputEntity = new Entity("Input");
         inputEntity.setProperty("timestamp", timestamp);
-        inputEntity.setProperty("text", Arrays.toString(comment.getComment()));
+        inputEntity.setProperty("text", comment.getComment());
 
         // Store the entity
         datastore.put(inputEntity);
@@ -100,9 +92,12 @@ public class DataServlet extends HttpServlet {
 
       comments.add(text);
     }
-
     // Print comments out
-    response.getWriter().println(comments); 
+    for (String comm : comments) {
+        response.getWriter().println("> " + comm); 
+
+    }
+    // response.getWriter().println(comments); 
   }
 
   /**
