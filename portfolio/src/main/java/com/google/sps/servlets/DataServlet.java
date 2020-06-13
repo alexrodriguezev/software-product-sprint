@@ -26,6 +26,14 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.sps.data.Comment;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import java.util.List;
+
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
@@ -37,6 +45,7 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
     String text = getParameter(request, "text-input", "");
+    long timestamp = System.currentTimeMillis();
     boolean upperCase = Boolean.parseBoolean(getParameter(request, "upper-case", "false"));
     boolean sort = Boolean.parseBoolean(getParameter(request, "sort", "false"));
 
@@ -56,20 +65,44 @@ public class DataServlet extends HttpServlet {
     // Set the Comment object
     comment.setComment(words);
 
-    // Redirect to /index.html 
-    response.setContentType("text/html;");
-    response.sendRedirect("https://8080-dot-12573813-dot-devshell.appspot.com/index.html");
+    // Make datastore and entity if comment is not null
+    if (comment.getComment() != null) {
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        Entity inputEntity = new Entity("Input");
+        inputEntity.setProperty("timestamp", timestamp);
+        inputEntity.setProperty("text", Arrays.toString(comment.getComment()));
+
+        // Store the entity
+        datastore.put(inputEntity);
+
+        // Redirect to /index.html 
+        response.setContentType("text/html;");
+        response.sendRedirect("https://8080-dot-12573813-dot-devshell.appspot.com/index.html");
+    }
+   
   }
   
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Respond with comment
     response.setContentType("text/html;");
-    String[] output = comment.getComment();
-    if (output != null) {
-        // if a comment was inputted in the form, print it
-        response.getWriter().println(Arrays.toString(output));
+
+    // Get comments from datastore 
+    Query query = new Query("Input").addSort("timestamp", SortDirection.DESCENDING);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+
+    List<String> comments = new ArrayList<>();
+
+    for (Entity entity : results.asIterable()) {
+      long id = entity.getKey().getId();
+      String text = (String) entity.getProperty("text");
+      long timestamp = (long) entity.getProperty("timestamp");
+
+      comments.add(text);
     }
+
+    // Print comments out
+    response.getWriter().println(comments); 
   }
 
   /**
