@@ -31,8 +31,6 @@ function addRandomGreeting() {
  * Fetches a message from the server and adds it to the DOM.
  */
 function addComment() {
-  console.log('Fetching a comment.');
-
   // The fetch() function returns a Promise because the request is asynchronous.
   const responsePromise = fetch('/data');
 
@@ -45,23 +43,16 @@ function addComment() {
  * addQuoteToDom().
  */
 function handleResponse(response) {
-  console.log('Handling the response.');
-
-  // Old comment: response.text() returns a Promise, because the response is a stream of
-  // content and not a simple variable.
-
-    // Convert to json
+    // Convert to text
     const textPromise = response.text()
 
-    // When the response is converted to json, pass the result into the
+    // When the response is converted to text, pass the result into the
     // addQuoteToDom() function.
     textPromise.then(addToDom)
 }
 
 /** Adds a comment to the DOM. */
 function addToDom(text) {
-  console.log('Adding comment to dom: ' + text);
-
   const commentContainer = document.getElementById('comment-container');
   commentContainer.innerText = text;
 }

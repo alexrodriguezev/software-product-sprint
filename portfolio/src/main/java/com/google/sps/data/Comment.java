@@ -14,13 +14,13 @@
 
 package com.google.sps.data;
 
+private String comment;
+
 /** Class containing comments submitted. */
 public final class Comment {
 
-  private String comment;
-
-  public void setComment(String input) {
-    comment = input;
+  public Comment(String comment) {
+      this.comment = comment;
   }
 
   public String getComment() {

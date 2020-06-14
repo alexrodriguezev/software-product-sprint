@@ -39,23 +39,20 @@ import java.util.List;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  Comment comment = new Comment();
-
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
     String text = getParameter(request, "text-input", "");
     long timestamp = System.currentTimeMillis();
     boolean upperCase = Boolean.parseBoolean(getParameter(request, "upper-case", "false"));
-    boolean sort = Boolean.parseBoolean(getParameter(request, "sort", "false"));
 
     // Convert the text to upper case.
     if (upperCase) {
       text = text.toUpperCase();
     }
 
-    // Set the Comment object
-    comment.setComment(text);
+    // Instantiate and set the Comment object
+    Comment comment = new Comment(text);
 
     // Make datastore and entity 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -78,18 +75,15 @@ public class DataServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html;");
 
-    // Get comments from datastore 
+    // Get comments from datastore from most to least recent 
     Query query = new Query("Input").addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
+    // Make array list of comments in order
     List<String> comments = new ArrayList<>();
-
     for (Entity entity : results.asIterable()) {
-      long id = entity.getKey().getId();
       String text = (String) entity.getProperty("text");
-      long timestamp = (long) entity.getProperty("timestamp");
-
       comments.add(text);
     }
     // Print comments out
@@ -97,17 +91,6 @@ public class DataServlet extends HttpServlet {
         response.getWriter().println("> " + comm); 
 
     }
-    // response.getWriter().println(comments); 
-  }
-
-  /**
-   * Converts an ArrayList<String> instance into a JSON string using the Gson library. Note: We first added
-   * the Gson library dependency to pom.xml.
-   */
-  private String convertToJsonUsingGson(HttpServletResponse response) {
-    Gson gson = new Gson();
-    String json = gson.toJson(response);
-    return json;
   }
 
   /**
@@ -115,10 +98,6 @@ public class DataServlet extends HttpServlet {
    *         was not specified by the client
    */
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
-    String value = request.getParameter(name);
-    if (value == null) {
-      return defaultValue;
-    }
-    return value;
+    return request.getParameter(name) == null ? defaultValue : value;
   }
 }
