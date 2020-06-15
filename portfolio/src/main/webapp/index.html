@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload="addComment()">
       
     <div id="header">
         <h1>Alex Rodríguez</h1>
@@ -22,7 +22,7 @@
             <a href="https://www.linkedin.com/in/alexandra-rodriguez-evans/">LinkedIn</a> 
             and <a href="https://github.com/alexrodriguez0">GitHub</a>. </p>   
         <img src="/images/cit.jpeg" alt="Picture of me" width="200" height="210">
-        <h2>Pojects I've worked on:</h2>   
+        <h2>Projects I've worked on:</h2>   
         <p>Most of the projects I've worked on recently are low-level and in C or 
         implemenations of ML models in Python. Some of these are:</p>
         <ul>
@@ -57,6 +57,17 @@
       <h2>Click the button for things I like to do during quarantine:</h2>
       <button onclick="addRandomGreeting()">Quarantine things!</button>
       <div id="greeting-container"></div>
+     <h2>Submit a comment here:</h2>
+      <form action="/data" method="POST">
+        <textarea name="text-input">example comment</textarea>
+        <br/>
+        <p>Spice it up:</p>
+        <input type="checkbox" name="upper-case" value="true"> Upper-case
+        <br/> <br/>
+        <input type="submit"/> 
+    </form>
+    <h2>Checkout all comments:</h2>
+        <div onload="addComment()" id="comment-container"></div>
     </div>
   </body>
 </html>

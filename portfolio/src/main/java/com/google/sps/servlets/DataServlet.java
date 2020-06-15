@@ -19,14 +19,85 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
+import com.google.gson.Gson;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.sps.data.Comment;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import java.util.List;
+
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
   @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form.
+    String text = getParameter(request, "text-input", "");
+    long timestamp = System.currentTimeMillis();
+    boolean upperCase = Boolean.parseBoolean(getParameter(request, "upper-case", "false"));
+
+    // Convert the text to upper case.
+    if (upperCase) {
+      text = text.toUpperCase();
+    }
+
+    // Instantiate and set the Comment object
+    Comment comment = new Comment(text);
+
+    // Make datastore and entity 
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Entity inputEntity = new Entity("Input");
+    inputEntity.setProperty("timestamp", timestamp);
+    if (comment.getComment() != null) {
+        // if comment is not null
+        inputEntity.setProperty("text", comment.getComment());
+    }
+     // Store the entity
+    datastore.put(inputEntity);
+
+    // Redirect to /index.html 
+    response.setContentType("text/html;");
+    response.sendRedirect("/index.html");
+   
+  }
+  
+  @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello Alex!</h1>");
+
+    // Get comments from datastore from most to least recent 
+    Query query = new Query("Input").addSort("timestamp", SortDirection.DESCENDING);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+
+    // Make array list of comments in order
+    List<String> comments = new ArrayList<>();
+    for (Entity entity : results.asIterable()) {
+      String text = (String) entity.getProperty("text");
+      comments.add(text);
+    }
+    // Print comments out
+    for (String comm : comments) {
+        response.getWriter().println("> " + comm); 
+
+    }
+  }
+
+  /**
+   * @return the request parameter, or the default value if the parameter
+   *         was not specified by the client
+   */
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    return request.getParameter(name) == null ? defaultValue : value;
   }
 }
