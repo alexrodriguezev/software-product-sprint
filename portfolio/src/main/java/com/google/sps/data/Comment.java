@@ -14,10 +14,10 @@
 
 package com.google.sps.data;
 
-private String comment;
-
 /** Class containing comments submitted. */
 public final class Comment {
+
+  private String comment;
 
   public Comment(String comment) {
       this.comment = comment;

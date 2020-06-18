@@ -98,6 +98,6 @@ public class DataServlet extends HttpServlet {
    *         was not specified by the client
    */
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
-    return request.getParameter(name) == null ? defaultValue : value;
+    return request.getParameter(name) == null ? defaultValue : request.getParameter(name);
   }
 }
