@@ -46,16 +46,9 @@ public class LoginServlet extends HttpServlet {
       out.println("<br/>");
 
       // Logout option
-      String urlToRedirectToAfterUserLogsOut = "/index.html";
-      String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
-    //   response.getWriter().println("<p>Hello " + userEmail + "!</p>");
-    //   response.getWriter().println("<p>Logout <a href=\"" + logoutUrl + "\">here</a>.</p>");
-
+      String logoutUrl = userService.createLogoutURL("/index.html");
       out.println("<button class=\"button\">Submit</button> <a href=\"" + logoutUrl + "\" class=\"button\">Logout</a>");
       out.println("</form>");
-    //   <button formaction=\"logoutUrl\" type=\"button\">Logout</button>
-      out.println("</p>");
-
     } else {
       // If user is not logged in, show link to login
       String loginUrl = userService.createLoginURL("/index.html");
