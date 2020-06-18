@@ -36,8 +36,7 @@ public class LoginServlet extends HttpServlet {
     UserService userService = UserServiceFactory.getUserService();
     if (userService.isUserLoggedIn()) {    
       // Show form
-      out.println("<p>Hi " + userService.getCurrentUser().getEmail() + "!</p>");
-      out.println("<p>Type a message and hit sumbit:</p>");
+      out.println("<p>Hi " + userService.getCurrentUser().getEmail() + "! Type a message and hit sumbit:</p>");
       out.println("<form method=\"POST\" action=\"/data\">");
       out.println("<textarea name=\"text-input\">your text goes here</textarea>");
       out.println("<p>Spice it up:</p>");

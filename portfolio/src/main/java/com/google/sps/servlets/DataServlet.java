@@ -32,6 +32,9 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import java.util.List;
 
 
@@ -41,8 +44,12 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get user (which should be logged in) information .
+    UserService userService = UserServiceFactory.getUserService();
+    String email = userService.getCurrentUser().getEmail();
     // Get the input from the form.
     String text = getParameter(request, "text-input", "");
+    // String email = getParameter(request, "email-input", "");
     long timestamp = System.currentTimeMillis();
     boolean upperCase = Boolean.parseBoolean(getParameter(request, "upper-case", "false"));
 
@@ -61,6 +68,7 @@ public class DataServlet extends HttpServlet {
     if (comment.getComment() != null) {
         // if comment is not null
         inputEntity.setProperty("text", comment.getComment());
+        inputEntity.setProperty("email", email);
     }
      // Store the entity
     datastore.put(inputEntity);
@@ -83,13 +91,13 @@ public class DataServlet extends HttpServlet {
     // Make array list of comments in order
     List<String> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
+      String email = (String) entity.getProperty("email");
       String text = (String) entity.getProperty("text");
-      comments.add(text);
+      comments.add(email + ": " + text);
     }
     // Print comments out
     for (String comm : comments) {
-        response.getWriter().println("> " + comm); 
-
+        response.getWriter().println("<html><li> " + comm + "</li></html>"); 
     }
   }
 

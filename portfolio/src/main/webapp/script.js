@@ -61,7 +61,7 @@ function handleResponse(response) {
 /** Adds a comment to the DOM. */
 function addCommentToDom(text) {
   const commentContainer = document.getElementById('comment-container');
-  commentContainer.innerText = text;
+  commentContainer.innerHTML = text;
 }
 
 /** Handle status response. */
