@@ -57,7 +57,7 @@ public final class FindMeetingQuery {
             continue;
         }
 
-        if (eventsList.get(i).getWhen().start() < currentStart) {
+        if (eventsList.get(i).getWhen().start() <= currentStart) {
             // If current event overlaps with an event that's already going on and it's start time < currentStart
             currentStart = Math.max(currentStart, eventsList.get(i).getWhen().end());
             continue;
