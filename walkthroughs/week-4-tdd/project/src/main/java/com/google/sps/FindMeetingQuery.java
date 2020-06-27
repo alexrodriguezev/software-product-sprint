@@ -49,9 +49,11 @@ public final class FindMeetingQuery {
 
     // Iterate through event list in order
     for (int i = 0; i < eventsList.size(); i++) {
-        // if (eventsList.get(i).getWhen().start() < 0 || eventsList.get(i).getWhen().end() >= 24) {
-        //     continue;
-        // }
+        if (eventsList.get(i).getWhen().start() < (TimeRange.START_OF_DAY - 1)|| eventsList.get(i).getWhen().end() > (TimeRange.END_OF_DAY + 1)) {
+            // If time range is out of bounds, continue to next event
+            continue;
+        }
+
         if (Collections.disjoint(eventsList.get(i).getAttendees(), request.getAttendees())) {
             // If event attendees and request attendees have no names in common
             continue;
