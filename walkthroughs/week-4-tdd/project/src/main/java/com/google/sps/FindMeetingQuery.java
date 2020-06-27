@@ -63,13 +63,16 @@ public final class FindMeetingQuery {
             continue;
         }
 
+        System.out.println(currentStart);
         if ((eventsList.get(i).getWhen().start() - request.getDuration()) >= currentStart) {
             // If there's time before event i starts, add it as a chunk of meeting time options
             options.add(TimeRange.fromStartEnd(currentStart, eventsList.get(i).getWhen().start(), false));
 
-            // Update currentStart
-            currentStart = eventsList.get(i).getWhen().end();
+            
         }
+
+        // Update currentStart
+        currentStart = eventsList.get(i).getWhen().end();    
     }
 
     if (TimeRange.WHOLE_DAY.end() - request.getDuration() > currentStart) {
