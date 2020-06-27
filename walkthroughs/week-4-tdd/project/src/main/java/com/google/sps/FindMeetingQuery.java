@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.lang.Math;
+import java.util.stream.Collectors;
 
 
 public final class FindMeetingQuery {
@@ -44,14 +45,13 @@ public final class FindMeetingQuery {
     int currentStart = 0;
 
     List<Event> eventsList = new ArrayList<Event>(events);
-    // eventsList.sort(Comparator.comparing(Event::getWhen));
+    eventsList = eventsList.stream().sorted(Comparator.comparingInt(Event::getStart)).collect(Collectors.toList());
+
     // Iterate through event list in order
-    System.out.println("eventsList.size(): " + eventsList.size());
     for (int i = 0; i < eventsList.size(); i++) {
         // if (eventsList.get(i).getWhen().start() < 0 || eventsList.get(i).getWhen().end() >= 24) {
         //     continue;
         // }
-        System.out.println("i: " + i);
         if (Collections.disjoint(eventsList.get(i).getAttendees(), request.getAttendees())) {
             // If event attendees and request attendees have no names in common
             continue;
@@ -67,8 +67,6 @@ public final class FindMeetingQuery {
         if ((eventsList.get(i).getWhen().start() - request.getDuration()) >= currentStart) {
             // If there's time before event i starts, add it as a chunk of meeting time options
             options.add(TimeRange.fromStartEnd(currentStart, eventsList.get(i).getWhen().start(), false));
-
-            
         }
 
         // Update currentStart

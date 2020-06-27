@@ -68,6 +68,13 @@ public final class Event {
   }
 
   /**
+   * Returns the start time for this event.
+   */
+  public int getStart() {
+    return when.start();
+  }
+
+  /**
    * Returns a read-only set of required attendees for this event.
    */
   public Set<String> getAttendees() {
