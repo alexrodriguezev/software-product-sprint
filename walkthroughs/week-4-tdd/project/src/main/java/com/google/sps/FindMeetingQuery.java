@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.lang.Math;
 
 
 public final class FindMeetingQuery {
@@ -47,6 +48,9 @@ public final class FindMeetingQuery {
     // Iterate through event list in order
     System.out.println("eventsList.size(): " + eventsList.size());
     for (int i = 0; i < eventsList.size(); i++) {
+        // if (eventsList.get(i).getWhen().start() < 0 || eventsList.get(i).getWhen().end() >= 24) {
+        //     continue;
+        // }
         System.out.println("i: " + i);
         if (Collections.disjoint(eventsList.get(i).getAttendees(), request.getAttendees())) {
             // If event attendees and request attendees have no names in common
@@ -55,7 +59,7 @@ public final class FindMeetingQuery {
 
         if (eventsList.get(i).getWhen().start() < currentStart) {
             // If current event overlaps with an event that's already going on and it's start time < currentStart
-            currentStart = eventsList.get(i).getWhen().end();
+            currentStart = Math.max(currentStart, eventsList.get(i).getWhen().end());
             continue;
         }
 
