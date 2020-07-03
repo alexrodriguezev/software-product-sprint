@@ -30,12 +30,12 @@ public final class FindMeetingQuery {
  */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     ArrayList<TimeRange> options = new ArrayList<TimeRange>();
-    if (Integer.compare((int) request.getDuration(), TimeRange.WHOLE_DAY.duration()) > 0) {
+    if ((int) request.getDuration() > TimeRange.WHOLE_DAY.duration()) {
         // If duration of event is more than 24hrs
         return options;
     }
 
-    if (events.equals(Collections.emptySet())) {
+    if (events.isEmpty()) {
         // If there are no events scheduled
         options.add(TimeRange.WHOLE_DAY);
         return options;
@@ -48,31 +48,30 @@ public final class FindMeetingQuery {
     eventsList = eventsList.stream().sorted(Comparator.comparingInt(Event::getStart)).collect(Collectors.toList());
 
     // Iterate through event list in order
-    for (int i = 0; i < eventsList.size(); i++) {
-        if (eventsList.get(i).getWhen().start() < (TimeRange.START_OF_DAY - 1)|| eventsList.get(i).getWhen().end() > (TimeRange.END_OF_DAY + 1)) {
+    for (Event e : eventsList) {
+        if (e.getWhen().start() < (TimeRange.START_OF_DAY - 1)|| e.getWhen().end() > (TimeRange.END_OF_DAY + 1)) {
             // If time range is out of bounds, continue to next event
             continue;
         }
 
-        if (Collections.disjoint(eventsList.get(i).getAttendees(), request.getAttendees())) {
+        if (Collections.disjoint(e.getAttendees(), request.getAttendees())) {
             // If event attendees and request attendees have no names in common
             continue;
         }
 
-        if (eventsList.get(i).getWhen().start() <= currentStart) {
+        if (e.getWhen().start() <= currentStart) {
             // If current event overlaps with an event that's already going on and it's start time < currentStart
-            currentStart = Math.max(currentStart, eventsList.get(i).getWhen().end());
+            currentStart = Math.max(currentStart, e.getWhen().end());
             continue;
         }
 
-        System.out.println(currentStart);
-        if ((eventsList.get(i).getWhen().start() - request.getDuration()) >= currentStart) {
+        if ((e.getWhen().start() - request.getDuration()) >= currentStart) {
             // If there's time before event i starts, add it as a chunk of meeting time options
-            options.add(TimeRange.fromStartEnd(currentStart, eventsList.get(i).getWhen().start(), false));
+            options.add(TimeRange.fromStartEnd(currentStart, e.getWhen().start(), false));
         }
 
         // Update currentStart
-        currentStart = eventsList.get(i).getWhen().end();    
+        currentStart = e.getWhen().end();    
     }
 
     if (TimeRange.WHOLE_DAY.end() - request.getDuration() > currentStart) {
