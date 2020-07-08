@@ -15,27 +15,34 @@
 /**
  * Adds a random activity to the page.
  */
-function addRandomGreeting() {
-  const greetings =
+function addRandomActivity() {
+  console.log("inside addRA");
+  const activities =
       ['Go for walks', 'Watch TV with my family', 'Pet my pets', 'Go on drives'];
 
   // Pick a random activity.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+  const act = activities[Math.floor(Math.random() * activities.length)];
 
   // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+  const actContainer = document.getElementById('activity-container');
+  actContainer.innerText = act;
 }
 
 /**
  * Fetches a message from the server and adds it to the DOM.
  */
-function addComment() {
+function addCommentSection() {
   // The fetch() function returns a Promise because the request is asynchronous.
   const responsePromise = fetch('/data');
 
   // When the request is complete, pass the response into handleResponse().
   responsePromise.then(handleResponse);
+
+  // Fetch the login status
+  const responseLoginPromise = fetch('/login');
+
+  // When the request is complete, pass into handleStatusResponse
+  responseLoginPromise.then(handleStatusResponse);
 }
 
 /**
@@ -47,12 +54,34 @@ function handleResponse(response) {
     const textPromise = response.text()
 
     // When the response is converted to text, pass the result into the
-    // addQuoteToDom() function.
-    textPromise.then(addToDom)
+    // addCommentToDom() function.
+    textPromise.then(addCommentToDom)
 }
 
 /** Adds a comment to the DOM. */
-function addToDom(text) {
+function addCommentToDom(text) {
   const commentContainer = document.getElementById('comment-container');
-  commentContainer.innerText = text;
+  commentContainer.innerHTML = text;
+}
+
+/** Handle status response. */
+function handleStatusResponse(response) {
+    // Convert to text
+    const textPromise = response.text();
+
+    // When the response is converted to text, pass the result into the
+    // addLoginToDom() function.
+    textPromise.then(addLoginToDom)
+}
+
+//** Add login or form to DOM. */
+function addLoginToDom(text) {
+  const statusContainer = document.getElementById('status-container');
+  statusContainer.innerHTML = text;
+}
+
+//**  Log user out. */
+function logUserOut() {
+  const statusContainer = document.getElementById('status-container');
+  statusContainer.innerHTML = text;
 }

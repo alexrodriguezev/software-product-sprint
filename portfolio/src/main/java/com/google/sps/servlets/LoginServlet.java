@@ -14,9 +14,11 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.*;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,21 +30,29 @@ public class LoginServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html");
+    PrintWriter out = response.getWriter();
 
+    // If user is logged in, show comment form
     UserService userService = UserServiceFactory.getUserService();
-    if (userService.isUserLoggedIn()) {
-      // if user is logged in, redirect to portfolio
-      String userEmail = userService.getCurrentUser().getEmail();
-      String urlToRedirectToAfterUserLogsOut = "/login";
-      String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
-      response.getWriter().println("<p>Hi " + userEmail + "!</p>");
-      response.getWriter().println("<p>Logout <a href=\"" + logoutUrl + "\">here</a>.</p>");
-    } else {
-      String urlToRedirectToAfterUserLogsIn = "/login";
-      String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
+    if (userService.isUserLoggedIn()) {    
+      // Show form
+      out.println("<p>Hi " + userService.getCurrentUser().getEmail() + "! Type a message and hit sumbit:</p>");
+      out.println("<form method=\"POST\" action=\"/data\">");
+      out.println("<textarea name=\"text-input\">your text goes here</textarea>");
+      out.println("<p>Spice it up:</p>");
+      out.println("<input type=\"checkbox\" name=\"upper-case\" value=\"true\"> Upper case");
+      out.println("<br/>");
+      out.println("<br/>");
 
-      response.getWriter().println("<p>Hi stranger.</p>");
-      response.getWriter().println("<p>Login <a href=\"" + loginUrl + "\">here</a>.</p>");
+      // Logout option
+      String logoutUrl = userService.createLogoutURL("/index.html");
+      out.println("<button class=\"button\">Submit</button> <a href=\"" + logoutUrl + "\" class=\"button\">Logout</a>");
+      out.println("</form>");
+    } else {
+      // If user is not logged in, show link to login
+      String loginUrl = userService.createLoginURL("/index.html");
+      out.println("<p>Login to submit a comment!</p>");
+      out.println("<a href=\"" + loginUrl + "\" class=\"button\">Login</a>");
     }
   }
 }
